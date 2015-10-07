@@ -1,0 +1,53 @@
+updated 07th october 2015 14.40
+
+USE citiprojectteam5db;
+
+SELECT * FROM Stocks;
+SELECT * FROM User;
+SELECT * FROM Market;
+SELECT * FROM TradeHistory;
+SELECT * FROM Company;
+SELECT * FROM MarketCompany;
+
+CREATE TABLE Company
+(	CompanyID int auto_increment PRIMARY KEY,
+	CompanySymbol nvarchar(30),
+    Strategy int(2)
+);
+
+ALTER TABLE Company ADD UNIQUE (CompanySymbol);
+
+CREATE TABLE Market
+(	MarketID int auto_increment PRIMARY KEY,
+	MarketName nvarchar(30)
+);
+
+CREATE TABLE User
+(	UserID int auto_increment PRIMARY KEY,
+	UserName nvarchar(30)
+);
+
+CREATE TABLE Stocks
+(	StockID int auto_increment PRIMARY KEY,
+    CompanyID int,
+    BidPrice double(10,4),
+    AskPrice double(10,4),
+	StockTime timestamp,
+    FOREIGN KEY (CompanyID) REFERENCES Company(CompanyID)
+);
+
+CREATE TABLE TradeHistory
+(	TradeID int auto_increment PRIMARY KEY,
+    StockID int,
+    TradeTime timestamp,
+    Buy tinyint,
+    FOREIGN KEY (StockID) REFERENCES Stocks(StockID)
+);
+
+CREATE TABLE MarketCompany
+(	IndexID int auto_increment PRIMARY KEY,
+	MarketID int,
+    CompanyID int,
+	FOREIGN KEY (MarketID) REFERENCES Market(MarketID),
+    FOREIGN KEY (CompanyID) REFERENCES Company(CompanyID)
+);
